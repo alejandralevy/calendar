@@ -1,3 +1,7 @@
+body {
+  background-color: #f3f3f3
+}
+
 .calendar-grid {
   display: grid;
   grid-template-rows: 40px repeat(7, 1fr);
@@ -15,7 +19,7 @@
   line-height: 1;
   font-family: 'Roboto', sans-serif;
   transition: all .5s ease;
-
+  font-weight: 400;
 }
 
 .calendar {
@@ -24,6 +28,9 @@
 
 #year {
   font-weight: 900;
+  color: rgb(224, 55, 140);
+  margin-left: 5px;
+  transition: opacity 0.5s linear;
 }
 
 .controls {
@@ -37,12 +44,12 @@
 }
 
 .festive {
-  color: red;
+  color: rgb(224, 55, 140);
   font-weight: 900;
 }
 
 .current-day {
-  background-color: dodgerblue;
+  background-color: rgb(224, 55, 140);
   color: white;
   font-weight: 900;
 }
@@ -52,9 +59,20 @@ button {
   cursor: pointer;
   margin-left: 10px;
   margin-right: 10px;
+  background: transparent;
 }
 
 .weekday {
   font-weight: 900;
-  border-bottom: 1px solid grey;
+  border-bottom: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: rgb(56, 56, 56);
+  border-top: 1px;
+  border-top-style: solid;
+  border-top-color: rgb(56, 56, 56);
+}
+
+i:hover {
+  color: rgb(224, 55, 140);
+  background: transparent;
 }
