@@ -34,7 +34,12 @@
 
 .festive {
   color: red;
-  font-weight: 400;
+  font-weight: 600;
+}
+
+.current-day {
+  color: green;
+  font-weight: 600;
 }
 
 button {

@@ -32,6 +32,9 @@ function loadDaysToCalendar() {
     document.getElementById(`day-${indexToInsert}`).textContent = date.day;
     indexToInsert++;
   });
+
+  if (displayedMonth == today.getMonth() && displayedYear == today.getFullYear())
+  paintCurrentDay();
 }
 
 function getDaysOfMonth(month, year) {
@@ -49,14 +52,11 @@ function getDaysOfMonth(month, year) {
   return daysOfMonth;
 }
 
-  // if (displayedMonth == today.getMonth() && displayedYear == today.getFullYear())
-  //   paintCurrentDay();
-
-
 function clearGrid() {
   for (let i = 0; i < 42; i++) {
     document.getElementById(`day-${i}`).textContent = '';
     document.getElementById(`day-${i}`).classList.remove('festive');
+    document.getElementById(`day-${i}`).classList.remove('current-day');
   }
 }
 
@@ -92,8 +92,9 @@ function updateDisplayedValues() {
 function paintFestivesDays() {
   getFestivesDayOfTheYear(displayedYear).then(festives =>{
    Object.entries(festives[displayedMonth]).forEach(festiveDay =>{
-     let indexOfFestiveDay = displayedDates[0].weekday + parseInt(festiveDay[0]) - 1;
-     document.getElementById(`day-${indexOfFestiveDay}`).classList.add('festive');
+      let indexOfFestiveDay = displayedDates[0].weekday + parseInt(festiveDay[0]) - 1;
+      document.getElementById(`day-${indexOfFestiveDay}`).classList.add('festive');
+      document.getElementById(`day-${indexOfFestiveDay}`).appendChild(createFestiveDayToggle('hola'));
    });
   })
 }
@@ -105,7 +106,18 @@ function getFestivesDayOfTheYear(year) {
 
 
 function paintCurrentDay() {
-
+  let indexOfCurrentDay = displayedDates[0].weekday + today.getDate() - 1;
+  document.getElementById(`day-${indexOfCurrentDay}`).classList.add('current-day');
 }
 
-document.getElementById("MyElement").classList.add('MyClass');
+// function createFestiveDayToggle(festiveDayName) {
+//   let toggleContainer = document.createElement('div');
+//   toggleContainer.className = 'tooltip';
+
+//   let toggle = document.createElement('span');
+//   toggle.textContent = festiveDayName;
+//   toggle.className = 'tooltiptext'
+
+//   toggleContainer.appendChild(toggle);
+//   return toggleContainer;
+// }
