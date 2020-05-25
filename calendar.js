@@ -18,7 +18,7 @@ function initUI() {
   paintFestivesDays();
 }
 
-function initControls(){
+function initControls() {
   document.getElementById('month').textContent = monthNames[today.getMonth()];
   document.getElementById('year').textContent = today.getFullYear();
   document.getElementById('next').addEventListener('click', loadNextMonth);
@@ -34,7 +34,7 @@ function loadDaysToCalendar() {
   });
 
   if (displayedMonth == today.getMonth() && displayedYear == today.getFullYear())
-  paintCurrentDay();
+    paintCurrentDay();
 }
 
 function getDaysOfMonth(month, year) {
@@ -55,8 +55,7 @@ function getDaysOfMonth(month, year) {
 function clearGrid() {
   for (let i = 0; i < 42; i++) {
     document.getElementById(`day-${i}`).textContent = '';
-    document.getElementById(`day-${i}`).classList.remove('festive');
-    document.getElementById(`day-${i}`).classList.remove('current-day');
+    document.getElementById(`day-${i}`).className = 'item'
   }
 }
 
@@ -65,7 +64,7 @@ function loadNextMonth() {
     (displayedMonth = 0,
       displayedYear++) :
     displayedMonth++;
-  
+
   displayedDates = getDaysOfMonth(displayedMonth, displayedYear);
   updateDisplayedValues();
   loadDaysToCalendar();
@@ -90,23 +89,24 @@ function updateDisplayedValues() {
 }
 
 function paintFestivesDays() {
-  getFestivesDayOfTheYear(displayedYear).then(festives =>{
-   Object.entries(festives[displayedMonth]).forEach(festiveDay =>{
+  getFestivesDayOfTheYear(displayedYear).then(festives => {
+    Object.entries(festives[displayedMonth]).forEach(festiveDay => {
       let indexOfFestiveDay = displayedDates[0].weekday + parseInt(festiveDay[0]) - 1;
       document.getElementById(`day-${indexOfFestiveDay}`).classList.add('festive');
-      document.getElementById(`day-${indexOfFestiveDay}`).appendChild(createFestiveDayToggle('hola'));
-   });
+    });
   })
 }
 
 function getFestivesDayOfTheYear(year) {
   let url = `http://nolaborables.com.ar/api/v2/feriados/${year}?formato=mensual`;
-  return fetch(url).then(res => res.json()).then(json => {return json});
+  return fetch(url).then(res => res.json()).then(json => {
+    return json
+  });
 }
 
 
 function paintCurrentDay() {
-  let indexOfCurrentDay = displayedDates[0].weekday + today.getDate() - 1;
+  let indexOfCurrentDay = (displayedDates[0].weekday + today.getDate()) - 1;
   document.getElementById(`day-${indexOfCurrentDay}`).classList.add('current-day');
 }
 

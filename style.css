@@ -2,47 +2,59 @@
   display: grid;
   grid-template-rows: 40px repeat(7, 1fr);
   grid-template-columns: repeat(7, 1fr);
-  grid-column-gap: 2px;
-  grid-row-gap: 2px;
-  width: 40vw;
-  height: 40vw;
 }
 
 .item {
-  background-color: #0069b3;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px;
+  padding: 25px;
   font-size: 15px;
-  color: white;
+  font-weight: 400;
+  color: black;
   line-height: 1;
-  font-family: 'hobeaux-rococeaux-background', Helvetica;
-  transition: all .3s ease
+  font-family: 'Roboto', sans-serif;
+  transition: all .5s ease;
+
 }
 
 .calendar {
-  margin: 30px;
+  margin: 5%;
+}
+
+#year {
+  font-weight: 900;
 }
 
 .controls {
   display: flex;
   justify-content: center;
   font-size: 15px;
-  font-family: 'hobeaux-rococeaux-background', Helvetica;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  align-items: center;
+  margin-bottom: 15px;
 }
 
 .festive {
   color: red;
-  font-weight: 600;
+  font-weight: 900;
 }
 
 .current-day {
-  color: green;
-  font-weight: 600;
+  background-color: dodgerblue;
+  color: white;
+  font-weight: 900;
 }
 
 button {
   border: none;
   cursor: pointer;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.weekday {
+  font-weight: 900;
+  border-bottom: 1px solid grey;
 }
