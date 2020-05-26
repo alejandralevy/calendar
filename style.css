@@ -1,10 +1,11 @@
 body {
-  background-color: #f3f3f3
+  background-color: #f3f3f3;
+  margin: 0;
 }
 
 .calendar-grid {
   display: grid;
-  grid-template-rows: 40px repeat(7, 1fr);
+  grid-template-rows: repeat(7, 1fr);
   grid-template-columns: repeat(7, 1fr);
 }
 
@@ -16,7 +17,17 @@ select {
   font-family: 'Roboto',
     sans-serif;
   font-size: 15px;
+  cursor: pointer;
+  text-align: center;
+  text-align-last: center;
+}
 
+option {
+  text-align: left;
+}
+
+select:hover {
+  color: rgb(224, 55, 140);
 }
 
 #year-selector {
@@ -25,11 +36,15 @@ select {
   margin-left: 5px;
 }
 
+#year-selector:hover {
+  color: rgb(56, 56, 56);
+}
+
 .item {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 25px;
+  padding: 15%;
   font-size: 15px;
   font-weight: 400;
   color: black;
@@ -40,13 +55,12 @@ select {
 }
 
 .calendar {
-  margin: 5%;
+  margin: 10%;
 }
 
 #year {
   font-weight: 900;
   color: rgb(224, 55, 140);
-  margin-left: 5px;
 }
 
 .controls {
@@ -73,8 +87,6 @@ select {
 button {
   border: none;
   cursor: pointer;
-  margin-left: 10px;
-  margin-right: 10px;
   background: transparent;
 }
 
@@ -91,4 +103,10 @@ button {
 i:hover {
   color: rgb(224, 55, 140);
   background: transparent;
+}
+
+@media only screen and (max-width: 600px) {
+  .calendar {
+    margin: 10% 20px auto 20px;
+  }
 }

@@ -130,26 +130,15 @@ function paintFestivesDays() {
 }
 
 function getFestivesDayOfTheYear(year) {
-  let url = `http://nolaborables.com.ar/api/v2/feriados/${year}?formato=mensual`;
-  return fetch(url).then(res => res.json()).then(json => {
-    return json
-  });
+  if (year > 2011) {
+    let url = `http://nolaborables.com.ar/api/v2/feriados/${year}?formato=mensual`;
+    return fetch(url).then(res => res.json()).then(json => {
+      return json
+    });
+  }
 }
-
 
 function paintCurrentDay() {
   let indexOfCurrentDay = (displayedDates[0].weekday + today.getDate()) - 1;
   document.getElementById(`day-${indexOfCurrentDay}`).classList.add('current-day');
 }
-
-// function createFestiveDayToggle(festiveDayName) {
-//   let toggleContainer = document.createElement('div');
-//   toggleContainer.className = 'tooltip';
-
-//   let toggle = document.createElement('span');
-//   toggle.textContent = festiveDayName;
-//   toggle.className = 'tooltiptext'
-
-//   toggleContainer.appendChild(toggle);
-//   return toggleContainer;
-// }
