@@ -8,6 +8,23 @@ body {
   grid-template-columns: repeat(7, 1fr);
 }
 
+select {
+  border: none;
+  background-color: #f3f3f3;
+  color: black;
+  line-height: 1;
+  font-family: 'Roboto',
+    sans-serif;
+  font-size: 15px;
+
+}
+
+#year-selector {
+  font-weight: 900;
+  color: rgb(224, 55, 140);
+  margin-left: 5px;
+}
+
 .item {
   display: flex;
   justify-content: center;
@@ -30,7 +47,6 @@ body {
   font-weight: 900;
   color: rgb(224, 55, 140);
   margin-left: 5px;
-  transition: opacity 0.5s linear;
 }
 
 .controls {

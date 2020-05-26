@@ -16,13 +16,15 @@ function initUI() {
   initControls();
   loadDaysToCalendar();
   paintFestivesDays();
+  loadYearsSelector();
 }
 
 function initControls() {
-  document.getElementById('month').textContent = monthNames[today.getMonth()];
-  document.getElementById('year').textContent = today.getFullYear();
   document.getElementById('next').addEventListener('click', loadNextMonth);
   document.getElementById('previous').addEventListener('click', loadPreviousMonth);
+  document.getElementById('month-selector').addEventListener('change', changeMonth);
+  document.getElementById('month-selector').selectedIndex = today.getMonth().toString();
+  document.getElementById('year-selector').addEventListener('change', changeYear);
 }
 
 function loadDaysToCalendar() {
@@ -35,6 +37,19 @@ function loadDaysToCalendar() {
 
   if (displayedMonth == today.getMonth() && displayedYear == today.getFullYear())
     paintCurrentDay();
+}
+
+function loadYearsSelector() {
+  let firstYear = displayedYear - 50;
+  let lastYear = displayedYear + 10;
+
+  for (let i = firstYear; i < lastYear; i++) {
+    let option = document.createElement('option');
+    option.text = i;
+    option.value = i;
+    document.getElementById('year-selector').appendChild(option);
+  }
+  document.getElementById('year-selector').value = today.getFullYear().toString();
 }
 
 function getDaysOfMonth(month, year) {
@@ -83,9 +98,26 @@ function loadPreviousMonth() {
   paintFestivesDays();
 }
 
+function changeMonth() {
+  displayedMonth = document.getElementById('month-selector').selectedIndex;
+  displayedDates = getDaysOfMonth(displayedMonth, displayedYear);
+  updateDisplayedValues();
+  loadDaysToCalendar();
+  paintFestivesDays();
+}
+
+function changeYear() {
+  debugger;
+  displayedYear = parseInt(document.getElementById('year-selector').value);
+  displayedDates = getDaysOfMonth(displayedMonth, displayedYear);
+  updateDisplayedValues();
+  loadDaysToCalendar();
+  paintFestivesDays();
+}
+
 function updateDisplayedValues() {
-  document.getElementById('month').textContent = monthNames[displayedMonth];
-  document.getElementById('year').textContent = displayedYear;
+  document.getElementById('month-selector').selectedIndex = displayedMonth;
+  document.getElementById('year-selector').value = displayedYear;
 }
 
 function paintFestivesDays() {
