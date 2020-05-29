@@ -22,24 +22,6 @@ select {
   text-align-last: center;
 }
 
-option {
-  text-align: left;
-}
-
-select:hover {
-  color: rgb(224, 55, 140);
-}
-
-#year-selector {
-  font-weight: 900;
-  color: rgb(224, 55, 140);
-  margin-left: 5px;
-}
-
-#year-selector:hover {
-  color: rgb(56, 56, 56);
-}
-
 .item {
   display: flex;
   justify-content: center;
@@ -55,12 +37,19 @@ select:hover {
 }
 
 .calendar {
-  margin: 15%;
+  margin: 5% 15% 15% 15%;
 }
 
 #year {
   font-weight: 900;
   color: rgb(224, 55, 140);
+  width: 5%;
+  text-align: center;
+}
+
+#month {
+  width: 10%;
+  text-align: center;
 }
 
 .controls {
@@ -88,6 +77,7 @@ button {
   border: none;
   cursor: pointer;
   background: transparent;
+  width: 5%;
 }
 
 .weekday {
