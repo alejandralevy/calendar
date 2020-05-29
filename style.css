@@ -36,6 +36,12 @@ select {
   font-weight: 400;
 }
 
+.day-month-container {
+  display: flex;
+  justify-content: space-around;
+  width: 150px;
+}
+
 .calendar {
   margin: 5% 15% 15% 15%;
 }
@@ -43,12 +49,10 @@ select {
 #year {
   font-weight: 900;
   color: rgb(224, 55, 140);
-  width: 5%;
   text-align: center;
 }
 
 #month {
-  width: 10%;
   text-align: center;
 }
 
@@ -59,7 +63,7 @@ select {
   font-family: 'Roboto', sans-serif;
   font-weight: 400;
   align-items: center;
-  margin-bottom: 15px;
+  margin-top: 45px;
 }
 
 .festive {
@@ -78,6 +82,7 @@ button {
   cursor: pointer;
   background: transparent;
   width: 5%;
+  padding: 0;
 }
 
 .weekday {
@@ -98,5 +103,9 @@ i:hover {
 @media only screen and (max-width: 600px) {
   .calendar {
     margin: 10% 20px auto 20px;
+  }
+
+  .item {
+    padding: 30%;
   }
 }
