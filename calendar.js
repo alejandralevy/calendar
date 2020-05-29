@@ -26,14 +26,19 @@ function initControls() {
 
 function loadDaysToCalendar() {
   clearGrid();
-  var indexToInsert = displayedDates[0].weekday;
+  var indexToInsertFirstDay = displayedDates[0].weekday;
   displayedDates.forEach(date => {
-    document.getElementById(`day-${indexToInsert}`).textContent = date.day;
-    indexToInsert++;
+    document.getElementById(`day-${indexToInsertFirstDay}`).textContent = date.day;
+    indexToInsertFirstDay++;
   });
 
   if (displayedMonth == today.getMonth() && displayedYear == today.getFullYear())
     paintCurrentDay();
+}
+
+function paintCurrentDay() {
+  let indexOfCurrentDay = (displayedDates[0].weekday + today.getDate()) - 1;
+  document.getElementById(`day-${indexOfCurrentDay}`).classList.add('current-day');
 }
 
 function getDaysOfMonth(month, year) {
@@ -60,14 +65,15 @@ function clearGrid() {
 
 function loadNextMonth() {
   displayedMonth == 11 ? (displayedMonth = 0, displayedYear++) : displayedMonth++;
-  displayedDates = getDaysOfMonth(displayedMonth, displayedYear);
-  updateDisplayedValues();
-  loadDaysToCalendar();
-  paintFestivesDays();
+  updateDatesOfCalendar();
 }
 
 function loadPreviousMonth() {
   displayedMonth == 0 ? (displayedMonth = 11, displayedYear--) : displayedMonth--;
+  updateDatesOfCalendar();
+}
+
+function updateDatesOfCalendar() {
   displayedDates = getDaysOfMonth(displayedMonth, displayedYear);
   updateDisplayedValues();
   loadDaysToCalendar();
@@ -97,9 +103,4 @@ function getFestivesDayOfTheYear(year) {
       return json
     })
     .catch(() => console.log('Cannot load festives days'));
-}
-
-function paintCurrentDay() {
-  let indexOfCurrentDay = (displayedDates[0].weekday + today.getDate()) - 1;
-  document.getElementById(`day-${indexOfCurrentDay}`).classList.add('current-day');
 }
