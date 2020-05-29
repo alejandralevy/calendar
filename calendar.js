@@ -22,6 +22,7 @@ function initControls() {
   document.getElementById('year').textContent = today.getFullYear();
   document.getElementById('next').addEventListener('click', loadNextMonth);
   document.getElementById('previous').addEventListener('click', loadPreviousMonth);
+  document.addEventListener('keydown', handleKeyPressed)
 }
 
 function loadDaysToCalendar() {
@@ -83,6 +84,16 @@ function updateDatesOfCalendar() {
 function updateDisplayedValues() {
   document.getElementById('month').textContent = monthNames[displayedMonth];
   document.getElementById('year').textContent = displayedYear;
+}
+
+function handleKeyPressed(event) {
+  if (event.key === 'ArrowLeft') {
+    loadPreviousMonth();
+  }
+
+  if (event.key === 'ArrowRight') {
+    loadNextMonth();
+  }
 }
 
 function paintFestivesDays() {
