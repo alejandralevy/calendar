@@ -3,8 +3,6 @@ const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
 ];
 
 const today = new Date();
-const firstDisplayedYear = today.getUTCFullYear() - 50;
-const lastDisplayedYear = today.getUTCFullYear() + 20;
 var displayedMonth = new Date().getMonth();
 var displayedYear = new Date().getFullYear();
 var displayedDates = getDaysOfMonth(displayedMonth, displayedYear);
@@ -17,15 +15,13 @@ function initUI() {
   initControls();
   loadDaysToCalendar();
   paintFestivesDays();
-  loadYearsSelector();
 }
 
 function initControls() {
+  document.getElementById('month').textContent = monthNames[today.getMonth()];
+  document.getElementById('year').textContent = today.getFullYear();
   document.getElementById('next').addEventListener('click', loadNextMonth);
   document.getElementById('previous').addEventListener('click', loadPreviousMonth);
-  document.getElementById('month-selector').addEventListener('change', changeMonth);
-  document.getElementById('month-selector').selectedIndex = today.getMonth().toString();
-  document.getElementById('year-selector').addEventListener('change', changeYear);
 }
 
 function loadDaysToCalendar() {
@@ -38,19 +34,6 @@ function loadDaysToCalendar() {
 
   if (displayedMonth == today.getMonth() && displayedYear == today.getFullYear())
     paintCurrentDay();
-}
-
-function loadYearsSelector() {
-  let firstYear = displayedYear - 50;
-  let lastYear = displayedYear + 10;
-
-  for (let i = firstYear; i < lastYear; i++) {
-    let option = document.createElement('option');
-    option.text = i;
-    option.value = i;
-    document.getElementById('year-selector').appendChild(option);
-  }
-  document.getElementById('year-selector').value = today.getFullYear().toString();
 }
 
 function getDaysOfMonth(month, year) {
@@ -76,55 +59,15 @@ function clearGrid() {
 }
 
 function loadNextMonth() {
-  if (displayedYear === lastDisplayedYear - 1 && displayedMonth === 11) {
-    alert("Alcanzaste el último año");
-  } else {
-    displayedMonth == 11 ? (displayedMonth = 0, displayedYear++) : displayedMonth++;
-    displayedDates = getDaysOfMonth(displayedMonth, displayedYear);
-    updateDisplayedValues();
-    loadDaysToCalendar();
-    paintFestivesDays();
-  }
+  displayedMonth == 11 ? (displayedMonth = 0, displayedYear++) : displayedMonth++;
+  displayedDates = getDaysOfMonth(displayedMonth, displayedYear);
+  updateDisplayedValues();
+  loadDaysToCalendar();
+  paintFestivesDays();
 }
 
 function loadPreviousMonth() {
-  if (displayedYear === firstDisplayedYear && displayedMonth === 0)
-    if (displayedYear != firstDisplayedYear) {
-      displayedMonth == 0 ? (displayedMonth = 11, displayedYear--) : displayedMonth--;
-      displayedDates = getDaysOfMonth(displayedMonth, displayedYear);
-      updateDisplayedValues();
-      loadDaysToCalendar();
-      paintFestivesDays();
-    }
-}
-
-function changeMonth() {
-  displayedMonth = document.getElementById('month-selector').selectedIndex;
-  displayedDates = getDaysOfMonth(displayedMonth, displayedYear);
-  updateDisplayedValues();
-  loadDaysToCalendar();
-  paintFestivesDays();
-}
-
-function changeYear() {
-  displayedYear = parseInt(document.getElementById('year-selector').value);
-  displayedDates = getDaysOfMonth(displayedMonth, displayedYear);
-  updateDisplayedValues();
-  loadDaysToCalendar();
-  paintFestivesDays();
-}
-
-function changeMonth() {
-  displayedMonth = document.getElementById('month-selector').selectedIndex;
-  displayedDates = getDaysOfMonth(displayedMonth, displayedYear);
-  updateDisplayedValues();
-  loadDaysToCalendar();
-  paintFestivesDays();
-}
-
-function changeYear() {
-  debugger;
-  displayedYear = parseInt(document.getElementById('year-selector').value);
+  displayedMonth == 0 ? (displayedMonth = 11, displayedYear--) : displayedMonth--;
   displayedDates = getDaysOfMonth(displayedMonth, displayedYear);
   updateDisplayedValues();
   loadDaysToCalendar();
@@ -132,8 +75,8 @@ function changeYear() {
 }
 
 function updateDisplayedValues() {
-  document.getElementById('month-selector').selectedIndex = displayedMonth;
-  document.getElementById('year-selector').value = displayedYear;
+  document.getElementById('month').textContent = monthNames[displayedMonth];
+  document.getElementById('year').textContent = displayedYear;
 }
 
 function paintFestivesDays() {
@@ -144,16 +87,16 @@ function paintFestivesDays() {
         document.getElementById(`day-${indexOfFestiveDay}`).classList.add('festive');
       });
     })
-    .catch(error => alert(error.message));
+    .catch(() => console.log('Cannot load festives days'));
 }
 
 function getFestivesDayOfTheYear(year) {
-  if (year > 2011) {
-    let url = `http://nolaborables.com.ar/api/v2/feriados/${year}?formato=mensual`;
-    return fetch(url).then(res => res.json()).then(json => {
+  let url = `http://nolaborables.com.ar/api/v2/feriados/${year}?formato=mensual`;
+  return fetch(url)
+    .then(res => res.json()).then(json => {
       return json
-    });
-  }
+    })
+    .catch(() => console.log('Cannot load festives days'));
 }
 
 function paintCurrentDay() {
