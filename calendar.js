@@ -3,7 +3,8 @@ const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
 ];
 
 const today = new Date();
-
+const firstDisplayedYear = today.getUTCFullYear() - 50;
+const lastDisplayedYear = today.getUTCFullYear() + 20;
 var displayedMonth = new Date().getMonth();
 var displayedYear = new Date().getFullYear();
 var displayedDates = getDaysOfMonth(displayedMonth, displayedYear);
@@ -16,13 +17,15 @@ function initUI() {
   initControls();
   loadDaysToCalendar();
   paintFestivesDays();
+  loadYearsSelector();
 }
 
 function initControls() {
-  document.getElementById('month').textContent = monthNames[today.getMonth()];
-  document.getElementById('year').textContent = today.getFullYear();
   document.getElementById('next').addEventListener('click', loadNextMonth);
   document.getElementById('previous').addEventListener('click', loadPreviousMonth);
+  document.getElementById('month-selector').addEventListener('change', changeMonth);
+  document.getElementById('month-selector').selectedIndex = today.getMonth().toString();
+  document.getElementById('year-selector').addEventListener('change', changeYear);
 }
 
 function loadDaysToCalendar() {
@@ -35,6 +38,16 @@ function loadDaysToCalendar() {
 
   if (displayedMonth == today.getMonth() && displayedYear == today.getFullYear())
     paintCurrentDay();
+}
+
+function loadYearsSelector() {
+  for (let i = firstDisplayedYear; i < lastDisplayedYear; i++) {
+    let option = document.createElement('option');
+    option.text = i;
+    option.value = i;
+    document.getElementById('year-selector').appendChild(option);
+  }
+  document.getElementById('year-selector').value = today.getFullYear().toString();
 }
 
 function getDaysOfMonth(month, year) {
@@ -60,23 +73,38 @@ function clearGrid() {
 }
 
 function loadNextMonth() {
-  displayedMonth == 11 ?
-    (displayedMonth = 0,
-      displayedYear++) :
-    displayedMonth++;
+  if (displayedYear === lastDisplayedYear - 1 && displayedMonth === 11) {
+    alert("Alcanzaste el último año");
+  } else {
+    displayedMonth == 11 ? (displayedMonth = 0, displayedYear++) : displayedMonth++;
+    displayedDates = getDaysOfMonth(displayedMonth, displayedYear);
+    updateDisplayedValues();
+    loadDaysToCalendar();
+    paintFestivesDays();
+  }
+}
 
+function loadPreviousMonth() {
+  if (displayedYear === firstDisplayedYear && displayedMonth === 0)
+    if (displayedYear != firstDisplayedYear) {
+      displayedMonth == 0 ? (displayedMonth = 11, displayedYear--) : displayedMonth--;
+      displayedDates = getDaysOfMonth(displayedMonth, displayedYear);
+      updateDisplayedValues();
+      loadDaysToCalendar();
+      paintFestivesDays();
+    }
+}
+
+function changeMonth() {
+  displayedMonth = document.getElementById('month-selector').selectedIndex;
   displayedDates = getDaysOfMonth(displayedMonth, displayedYear);
   updateDisplayedValues();
   loadDaysToCalendar();
   paintFestivesDays();
 }
 
-function loadPreviousMonth() {
-  displayedMonth == 0 ?
-    (displayedMonth = 11,
-      displayedYear--) :
-    displayedMonth--;
-
+function changeYear() {
+  displayedYear = parseInt(document.getElementById('year-selector').value);
   displayedDates = getDaysOfMonth(displayedMonth, displayedYear);
   updateDisplayedValues();
   loadDaysToCalendar();
@@ -84,40 +112,34 @@ function loadPreviousMonth() {
 }
 
 function updateDisplayedValues() {
-  document.getElementById('month').textContent = monthNames[displayedMonth];
-  document.getElementById('year').textContent = displayedYear;
+  document.getElementById('month-selector').selectedIndex = displayedMonth;
+  document.getElementById('year-selector').value = displayedYear;
 }
 
 function paintFestivesDays() {
-  getFestivesDayOfTheYear(displayedYear).then(festives => {
-    Object.entries(festives[displayedMonth]).forEach(festiveDay => {
-      let indexOfFestiveDay = displayedDates[0].weekday + parseInt(festiveDay[0]) - 1;
-      document.getElementById(`day-${indexOfFestiveDay}`).classList.add('festive');
-    });
-  })
+  getFestivesDayOfTheYear(displayedYear)
+    .then(festives => {
+      Object.entries(festives[displayedMonth]).forEach(festiveDay => {
+        let indexOfFestiveDay = displayedDates[0].weekday + parseInt(festiveDay[0]) - 1;
+        document.getElementById(`day-${indexOfFestiveDay}`).classList.add('festive');
+      });
+    })
+    .catch(error => alert(error.message));
 }
 
 function getFestivesDayOfTheYear(year) {
-  let url = `http://nolaborables.com.ar/api/v2/feriados/${year}?formato=mensual`;
-  return fetch(url).then(res => res.json()).then(json => {
-    return json
-  });
+  debugger;
+  if (year > 2011) {
+    let url = `http://nolaborables.com.ar/api/v2/feriados/${year}?formato=mensual`;
+    return fetch(url).then(res => res.json())
+      .then(json => {
+        return json
+      })
+      .catch(error => alert(error.message));
+  }
 }
-
 
 function paintCurrentDay() {
   let indexOfCurrentDay = (displayedDates[0].weekday + today.getDate()) - 1;
   document.getElementById(`day-${indexOfCurrentDay}`).classList.add('current-day');
 }
-
-// function createFestiveDayToggle(festiveDayName) {
-//   let toggleContainer = document.createElement('div');
-//   toggleContainer.className = 'tooltip';
-
-//   let toggle = document.createElement('span');
-//   toggle.textContent = festiveDayName;
-//   toggle.className = 'tooltiptext'
-
-//   toggleContainer.appendChild(toggle);
-//   return toggleContainer;
-// }
