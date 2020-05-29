@@ -41,7 +41,10 @@ function loadDaysToCalendar() {
 }
 
 function loadYearsSelector() {
-  for (let i = firstDisplayedYear; i < lastDisplayedYear; i++) {
+  let firstYear = displayedYear - 50;
+  let lastYear = displayedYear + 10;
+
+  for (let i = firstYear; i < lastYear; i++) {
     let option = document.createElement('option');
     option.text = i;
     option.value = i;
@@ -111,6 +114,23 @@ function changeYear() {
   paintFestivesDays();
 }
 
+function changeMonth() {
+  displayedMonth = document.getElementById('month-selector').selectedIndex;
+  displayedDates = getDaysOfMonth(displayedMonth, displayedYear);
+  updateDisplayedValues();
+  loadDaysToCalendar();
+  paintFestivesDays();
+}
+
+function changeYear() {
+  debugger;
+  displayedYear = parseInt(document.getElementById('year-selector').value);
+  displayedDates = getDaysOfMonth(displayedMonth, displayedYear);
+  updateDisplayedValues();
+  loadDaysToCalendar();
+  paintFestivesDays();
+}
+
 function updateDisplayedValues() {
   document.getElementById('month-selector').selectedIndex = displayedMonth;
   document.getElementById('year-selector').value = displayedYear;
@@ -128,14 +148,11 @@ function paintFestivesDays() {
 }
 
 function getFestivesDayOfTheYear(year) {
-  debugger;
   if (year > 2011) {
     let url = `http://nolaborables.com.ar/api/v2/feriados/${year}?formato=mensual`;
-    return fetch(url).then(res => res.json())
-      .then(json => {
-        return json
-      })
-      .catch(error => alert(error.message));
+    return fetch(url).then(res => res.json()).then(json => {
+      return json
+    });
   }
 }
 
